@@ -4,7 +4,7 @@ A full-stack **Task Manager** application built using **MongoDB, Express, React,
 
 ## 🚀 Live Deployment Links:
 
-- **Frontend (Vercel):** [https://your-frontend.vercel.app](https://your-frontend.vercel.app)
+- **Frontend (Vercel):** [https://your-frontend.vercel.app](https://task-manager-mongodb-kvbbt74g4-namratha-s-projects-0821a31d.vercel.app/)
 - **Backend (Render):** [https://task-manager-kg3o.onrender.com](https://task-manager-kg3o.onrender.com)
 
 ## 📌 Features:
