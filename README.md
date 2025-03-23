@@ -33,7 +33,3 @@ A full-stack **Task Manager** application built using **MongoDB, Express, React,
 - dotenv (for environment variables)
 - CORS & Middleware
 - Hosted on Render
-
----
-
-## 📂 Project Structure:
