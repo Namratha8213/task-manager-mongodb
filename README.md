@@ -4,7 +4,7 @@ A full-stack **Task Manager** application built using the **MERN stack (MongoDB,
 
 ## 🚀 Live Deployment Links
 
-[Click teh link ](https://task-manager-mongodb-54c77hijd-namratha-s-projects-0821a31d.vercel.app/)
+[Click the link ](https://task-manager-mongodb-54c77hijd-namratha-s-projects-0821a31d.vercel.app/)
 
 - **Frontend (Vercel):** [Task Manager App](https://task-manager-mongodb-54c77hijd-namratha-s-projects-0821a31d.vercel.app/)
 - **Backend (Render):** [Task Manager API](https://task-manager-mongodb-alek.onrender.com/)
