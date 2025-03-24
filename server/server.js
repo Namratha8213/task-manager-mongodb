@@ -7,7 +7,18 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+    "https://task-manager-mongodb-54c77hijd-namratha-s-projects-0821a31d.vercel.app",
+    "http://localhost:3000", // For local development
+  ];
+  
+  app.use(
+    cors({
+      origin: allowedOrigins,
+      credentials: true,
+    })
+  );
+  
 app.use("/api", taskRoutes);
 app.use(express.static("public"));  // Serve frontend files
 
