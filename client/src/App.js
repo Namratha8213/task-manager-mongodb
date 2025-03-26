@@ -17,7 +17,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const API_URL = "http://localhost:5000/api/tasks";
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+axios.get(`${API_URL}/tasks`)
 
 function App() {
   const [tasks, setTasks] = useState([]);
