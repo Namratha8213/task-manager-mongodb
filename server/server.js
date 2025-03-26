@@ -19,7 +19,6 @@ const allowedOrigins = [
       credentials: true,
     })
   );
-  const cors = require('cors');
 
 app.use("/api", taskRoutes);
 app.use(express.static("public"));  // Serve frontend files
