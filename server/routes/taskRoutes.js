@@ -27,12 +27,29 @@ router.get("/tasks", async (req, res) => {
 // 📌 3. Update a Task (Update)
 router.put("/tasks/:id", async (req, res) => {
     try {
-        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { id } = req.params;
+        const { title, completed } = req.body;
+
+        // Check if required fields are present
+        if (!title && completed === undefined) {
+            return res.status(400).json({ message: "Missing fields to update" });
+        }
+
+        // Check if the task exists before updating
+        const task = await Task.findById(id);
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        const updatedTask = await Task.findByIdAndUpdate(id, req.body, { new: true });
+
         res.json(updatedTask);
     } catch (error) {
+        console.error("Error updating task:", error);
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // 📌 4. Delete a Task (Delete)
 router.delete("/tasks/:id", async (req, res) => {

@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   List,
-  ListItem,
   ListItemText,
   IconButton,
   Switch,
@@ -15,6 +14,7 @@ import {
   CardContent,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const API_URL = "http://localhost:5000/api/tasks";
@@ -22,6 +22,8 @@ const API_URL = "http://localhost:5000/api/tasks";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
+  const [editingTask, setEditingTask] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   // Theme for Dark/Light mode
@@ -68,6 +70,28 @@ function App() {
     }
   };
 
+  // Edit Task
+  const startEditing = (task) => {
+    setEditingTask(task._id);
+    setEditTitle(task.title);
+  };
+
+  const cancelEditing = () => {
+    setEditingTask(null);
+    setEditTitle("");
+  };
+
+  const updateTask = async (id) => {
+    try {
+      await axios.put(`${API_URL}/${id}`, { title: editTitle });
+      setEditingTask(null);
+      setEditTitle("");
+      fetchTasks();
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -108,65 +132,64 @@ function App() {
         <List sx={{ mt: 3 }}>
           {tasks.map((task) => (
             <Card
-            key={task._id}
-            sx={{
-              mb: 2,
-              p: 1.5,
-              borderRadius: "12px",
-              background: darkMode
-                ? "rgba(255, 255, 255, 0.1)"
-                : "rgba(255, 255, 255, 0.7)",
-              backdropFilter: "blur(10px)",
-              boxShadow: darkMode
-                ? "0 4px 12px rgba(255, 255, 255, 0.2)"
-                : "0 4px 12px rgba(0, 0, 0, 0.1)",
-              transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
-              "&:hover": {
-                transform: "scale(1.05)",
-                boxShadow: darkMode
-                  ? "0 6px 16px rgba(255, 255, 255, 0.3)"
-                  : "0 6px 16px rgba(0, 0, 0, 0.2)",
-              },
-            }}
-          >
-            <CardContent
+              key={task._id}
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "12px 18px",
+                mb: 2,
+                p: 1.5,
+                borderRadius: "12px",
+                background: darkMode
+                  ? "rgba(255, 255, 255, 0.1)"
+                  : "rgba(255, 255, 255, 0.7)",
+                backdropFilter: "blur(10px)",
+                boxShadow: darkMode
+                  ? "0 4px 12px rgba(255, 255, 255, 0.2)"
+                  : "0 4px 12px rgba(0, 0, 0, 0.1)",
+                transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "scale(1.05)",
+                  boxShadow: darkMode
+                    ? "0 6px 16px rgba(255, 255, 255, 0.3)"
+                    : "0 6px 16px rgba(0, 0, 0, 0.2)",
+                },
               }}
             >
-              <ListItemText
-                primary={task.title}
-                secondary={task.status}
-                primaryTypographyProps={{
-                  fontWeight: "bold",
-                  fontSize: "1.1rem",
-                  color: darkMode ? "#fff" : "#333",
-                }}
-                secondaryTypographyProps={{
-                  fontSize: "0.85rem",
-                  color: darkMode ? "#bbb" : "#666",
-                }}
-              />
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => deleteTask(task._id)}
+              <CardContent
                 sx={{
-                  "&:hover": {
-                    color: "red",
-                    transition: "0.2s",
-                    transform: "scale(1.1)",
-                  },
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "12px 18px",
                 }}
               >
-                <DeleteIcon />
-              </IconButton>
-            </CardContent>
-          </Card>
-          
+                {editingTask === task._id ? (
+                  <TextField
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    fullWidth
+                  />
+                ) : (
+                  <ListItemText
+                    primary={task.title}
+                    secondary={task.status}
+                  />
+                )}
+                {editingTask === task._id ? (
+                  <>
+                    <Button onClick={() => updateTask(task._id)}>Update</Button>
+                    <Button onClick={cancelEditing}>Cancel</Button>
+                  </>
+                ) : (
+                  <>
+                    <IconButton onClick={() => startEditing(task)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => deleteTask(task._id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
+                )}
+              </CardContent>
+            </Card>
           ))}
         </List>
       </Container>
